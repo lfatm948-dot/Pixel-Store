@@ -45,7 +45,7 @@ product.classList.remove("show");
 });
 // إرسال الطلب للواتساب
 function sendWhatsApp() {
-
+alert("اشتغلت دالة الواتساب");
     let name = document.getElementById("name").value;
 
     let phone = document.getElementById("phone").value;
