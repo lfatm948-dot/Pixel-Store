@@ -5,11 +5,14 @@ const whatsappNumber = "218944969802";
 let selectedProduct = "";
 
 // إظهار نموذج الطلب
-function openOrderBox() {
-    const orderBox = document.getElementById('orderBox');
-    orderBox.style.display = 'block'; 
-    orderBox.scrollIntoView({ behavior: 'smooth' });
+function showOrder(productName) {
+    // هذا السطر يظهر البوكس أول ما يضغط الزبون
+    document.getElementById('orderBox').style.display = 'block';
+    
+    // وهذا السطر ينزل الصفحة تلقائياً لعند البوكس
+    document.getElementById('orderBox').scrollIntoView({ behavior: 'smooth' });
 }
+
 
 
 
