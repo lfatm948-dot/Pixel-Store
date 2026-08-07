@@ -475,16 +475,6 @@ header p {
 }
 
 
-/* إخفاء صندوق الطلب بالبداية بشكل قاطع */
-.order-box {
-    display: none !important; 
-}
-
-/* لإظهاره عندما يضغط الزبون */
-.order-box.active {
-    display: block !important;
-}
-
 
 
 /* Footer */
