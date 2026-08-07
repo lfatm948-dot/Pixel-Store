@@ -1,4 +1,8 @@
+let whatsappLink = 
+"https://wa.me/" + whatsappNumber + 
+"?text=" + encodeURIComponent(message);
 
+window.open(whatsappLink, "_blank");
 const whatsappNumber = "218944969802";
 
 // المنتج المختار
