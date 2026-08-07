@@ -5,11 +5,12 @@ const whatsappNumber = "218944969802";
 let selectedProduct = "";
 
 // إظهار نموذج الطلب
-function openOrderBox(productName) {
+function openOrderBox() {
     const orderBox = document.getElementById('orderBox');
-    orderBox.style.display = 'block'; // يظهره عند الضغط
+    orderBox.style.display = 'block'; 
     orderBox.scrollIntoView({ behavior: 'smooth' });
 }
+
 
 
 
