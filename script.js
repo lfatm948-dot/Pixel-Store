@@ -5,18 +5,13 @@ const whatsappNumber = "218944969802";
 let selectedProduct = "";
 
 // إظهار نموذج الطلب
-
 function openOrderBox(productName) {
-    // 1. إظهار صندوق الطلب
     const orderBox = document.getElementById('orderBox');
-    orderBox.classList.add('active');
-
-    // 2. النزول تلقائياً إلى صندوق الطلب ليراه الزبون فوراً
+    orderBox.style.display = 'block'; // يظهره عند الضغط
     orderBox.scrollIntoView({ behavior: 'smooth' });
-
-    // (اختياري) إذا كنت تريد وضع اسم المنتج المختار تلقائياً في خانة أو نص:
-    // document.getElementById('selectedProduct').innerText = productName;
 }
+
+
 
 
 const products = document.querySelectorAll(".product-card");
