@@ -37,8 +37,8 @@ header {
 }
 
 header img, header .logo {
-    width: 120px !important;  /* تصغير الحجم ليصبح مناسباً للعين */
-    height: 120px !important;
+    width: 180px !important;  /* تصغير الحجم ليصبح مناسباً للعين */
+    height: 180px !important;
     object-fit: contain;
     margin-bottom: 10px;
 }
@@ -476,6 +476,15 @@ header p {
 
 
 
+/* إخفاء صندوق الطلب بالبداية */
+.order-box {
+    display: none; 
+}
+
+/* هذا الكلاس سنستخدمه لإظهاره لاحقاً عند الضغط */
+.order-box.active {
+    display: block;
+}
 
 
 /* Footer */
