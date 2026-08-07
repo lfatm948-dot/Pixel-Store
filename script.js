@@ -55,7 +55,6 @@ function sendWhatsApp() {
 
     window.open(whatsappLink, "_blank");
 
-}
 
 
     let name = nameElement.value;
