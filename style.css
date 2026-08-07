@@ -490,6 +490,11 @@ footer {
 
     }
 
+.alert-text {
+    color: #ff3333; /* لون أحمر واضح وبارز */
+    font-weight: bold; /* خط عريض Bold */
+    font-size: 16px;
+}
 
 
     .hamburger {
