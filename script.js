@@ -103,6 +103,26 @@ function openMenu(){
     }
 
 }
+// مراقب التمرير لإظهار وإخفاء البطاقات
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // تظهر البطاقة عندما تنزل للأسفل
+            entry.target.classList.add('show');
+        } else {
+            // تختفي البطاقة عندما تصعد للأعلى
+            entry.target.classList.remove('show');
+        }
+    });
+}, {
+    threshold: 0.15 
+});
+
+// تطبيق المراقبة على جميع بطاقات المنتجات
+document.querySelectorAll('.product-card').forEach(card => {
+    observer.observe(card);
+});
+
 
 
     
