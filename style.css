@@ -475,16 +475,16 @@ header p {
 }
 
 
-
-/* إخفاء صندوق الطلب بالبداية */
+/* إخفاء صندوق الطلب بالبداية بشكل قاطع */
 .order-box {
-    display: none; 
+    display: none !important; 
 }
 
-/* هذا الكلاس سنستخدمه لإظهاره لاحقاً عند الضغط */
+/* لإظهاره عندما يضغط الزبون */
 .order-box.active {
-    display: block;
+    display: block !important;
 }
+
 
 
 /* Footer */
