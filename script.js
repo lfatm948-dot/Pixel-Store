@@ -7,6 +7,8 @@ function showOrder(productName) {
 
     selectedProduct = productName;
 
+    document.getElementById("selectedProduct").innerText = productName;
+
     const box = document.getElementById('orderBox');
 
     if (box) {
