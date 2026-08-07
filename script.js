@@ -1,27 +1,20 @@
-let whatsappLink = 
-"https://wa.me/" + whatsappNumber + 
-"?text=" + encodeURIComponent(message);
 
-window.open(whatsappLink, "_blank");
 const whatsappNumber = "218944969802";
 
 // المنتج المختار
 let selectedProduct = "";
-
-
 function showOrder(productName) {
+
+    selectedProduct = productName;
+
     const box = document.getElementById('orderBox');
+
     if (box) {
         box.style.display = 'block';
         box.scrollIntoView({ behavior: 'smooth' });
     }
+
 }
-
-
-
-
-
-
 
 const products = document.querySelectorAll(".product-card");
 
