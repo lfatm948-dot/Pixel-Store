@@ -26,7 +26,7 @@ let position = product.getBoundingClientRect().top;
 
 let screen = window.innerHeight;
 
-if(position < screen){
+if(position < screen - 100){
 
 product.classList.add("show");
 
