@@ -1,4 +1,4 @@
-const whatsappNumber = "218944969802";
+
 
 // المنتج المختار
 let selectedProduct = "";
@@ -44,15 +44,19 @@ product.classList.remove("show");
 });
 // إرسال الطلب للواتساب
 function sendWhatsApp() {
-    let nameElement = document.getElementById("name");
-    let phoneElement = document.getElementById("phone");
-    let locationElement = document.getElementById("location");
-    let paymentElement = document.getElementById("payment");
 
-    if (!nameElement || !phoneElement || !locationElement) {
-        alert("يرجى التأكد من وجود حقول الإدخال في الصفحة");
-        return;
-    }
+    let whatsappNumber = "218944969802";
+
+    let message = "السلام عليكم، أريد إتمام طلب من متجر PIXEL 💜";
+
+    let whatsappLink =
+    "https://wa.me/" + whatsappNumber +
+    "?text=" + encodeURIComponent(message);
+
+    window.open(whatsappLink, "_blank");
+
+}
+
 
     let name = nameElement.value;
     let phone = phoneElement.value;
