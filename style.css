@@ -217,7 +217,7 @@ header p {
     margin-bottom: 35px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     text-align: center;
-    opacity: 0;
+    opacity: 1;
     transform: translateY(60px);
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
