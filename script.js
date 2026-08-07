@@ -72,7 +72,7 @@ function sendWhatsApp() {
     }
 
     let message = 
-`طلب جديد من متجر PIXEL 💜
+`السلام عليكم ورحمة الله وبركاته 
 
 المنتج: ${selectedProduct}
 
