@@ -1,4 +1,3 @@
-
 const whatsappNumber = "218944969802";
 
 // المنتج المختار
@@ -45,16 +44,22 @@ product.classList.remove("show");
 });
 // إرسال الطلب للواتساب
 function sendWhatsApp() {
-alert("اشتغلت دالة الواتساب");
-    let name = document.getElementById("name").value;
+    let nameElement = document.getElementById("name");
+    let phoneElement = document.getElementById("phone");
+    let locationElement = document.getElementById("location");
+    let paymentElement = document.getElementById("payment");
 
-    let phone = document.getElementById("phone").value;
+    if (!nameElement || !phoneElement || !locationElement) {
+        alert("يرجى التأكد من وجود حقول الإدخال في الصفحة");
+        return;
+    }
 
-    let location = document.getElementById("location").value;
+    let name = nameElement.value;
+    let phone = phoneElement.value;
+    let location = locationElement.value;
+    let payment = paymentElement ? paymentElement.value : "";
 
-    let payment = document.getElementById("payment").value;
-
-    if(name === "" || phone === "" || location === ""){
+    if(name.trim() === "" || phone.trim() === "" || location.trim() === ""){
 
         alert("يرجى تعبئة جميع البيانات");
 
@@ -79,7 +84,8 @@ alert("اشتغلت دالة الواتساب");
     "https://wa.me/" + whatsappNumber + 
     "?text=" + encodeURIComponent(message);
 
-    window.open(whatsappLink, "_blank");
+    // تم تعديل هذه الخطوة لضمان فتح الواتساب فوراً وعدم حظرها من المتصفح
+    window.location.href = whatsappLink;
 
 }
 
@@ -119,7 +125,3 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.product-card').forEach(card => {
     observer.observe(card);
 });
-
-
-
-    
