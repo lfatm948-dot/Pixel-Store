@@ -16,25 +16,53 @@ body {
 
 /* Navbar */
 
+/* 1. إصلاح الـ Navbar وجعله متناسق تماماً مع لون الموقع */
 nav {
-
     width: 100%;
-    padding: 15px 6%;
-
+    padding: 12px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    background: white;
-
+    background: #ffffff; /* خلفية بيضاء صافية */
     position: sticky;
     top: 0;
-
     z-index: 100;
-
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
+
+/* 2. تصغير وتحسين حجم الشعار (اللوقو) في الهيدر */
+header {
+    text-align: center;
+    padding: 30px 20px 20px 20px; /* تقليص الفراغات العلوية */
+}
+
+header img, header .logo {
+    width: 120px !important;  /* تصغير الحجم ليصبح مناسباً للعين */
+    height: 120px !important;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* 3. ترتيب نص الترحيب وموقع "منتجاتنا" لتكون متناسقة */
+header h1 {
+    font-size: 28px;
+    color: white !important;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.9);
+}
+
+/* تنسيق عنوان المنتجات ليكون مرتباً وتحته مسافة مريحة */
+.products h2 {
+    text-align: center;
+    font-size: 28px;
+    margin: 20px 0 30px 0;
+    color: white;
+}
+
 
 
 
@@ -531,52 +559,4 @@ footer {
 
     }
 
-/* 1. إصلاح الـ Navbar وجعله متناسق تماماً مع لون الموقع */
-nav {
-    width: 100%;
-    padding: 12px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffffff; /* خلفية بيضاء صافية */
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* 2. تصغير وتحسين حجم الشعار (اللوقو) في الهيدر */
-header {
-    text-align: center;
-    padding: 30px 20px 20px 20px; /* تقليص الفراغات العلوية */
-}
-
-header img, header .logo {
-    width: 120px !important;  /* تصغير الحجم ليصبح مناسباً للعين */
-    height: 120px !important;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-/* 3. ترتيب نص الترحيب وموقع "منتجاتنا" لتكون متناسقة */
-header h1 {
-    font-size: 28px;
-    color: white !important;
-    margin-bottom: 8px;
-}
-
-header p {
-    font-size: 16px;
-    color: rgba(255,255,255,0.9);
-}
-
-/* تنسيق عنوان المنتجات ليكون مرتباً وتحته مسافة مريحة */
-.products h2 {
-    text-align: center;
-    font-size: 28px;
-    margin: 20px 0 30px 0;
-    color: white;
-}
-
-}
 
