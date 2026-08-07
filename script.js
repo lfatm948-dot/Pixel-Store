@@ -4,13 +4,13 @@ const whatsappNumber = "218944969802";
 // المنتج المختار
 let selectedProduct = "";
 
-// إظهار نموذج الطلب
+
 function showOrder(productName) {
-    // هذا السطر يظهر البوكس أول ما يضغط الزبون
-    document.getElementById('orderBox').style.display = 'block';
-    
-    // وهذا السطر ينزل الصفحة تلقائياً لعند البوكس
-    document.getElementById('orderBox').scrollIntoView({ behavior: 'smooth' });
+    const box = document.getElementById('orderBox');
+    if (box) {
+        box.style.display = 'block';
+        box.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 
