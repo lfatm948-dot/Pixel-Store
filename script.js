@@ -137,7 +137,7 @@ product.classList.remove("show");
 });
 
 });
-// إرسال الطلب للواتساب
+
 function sendWhatsApp() {
 
     let name = document.getElementById("name").value.trim();
@@ -154,24 +154,17 @@ function sendWhatsApp() {
 
     }
 
-    // الإجمالي = سعر المنتج + سعر التوصيل
+    // السعر النهائي = سعر المنتج + سعر التوصيل
     let total = selectedPrice + selectedDelivery;
 
     let message = 
-`طلب جديد من الموقع 🛍️
-
-الاسم: ${name}
-الهاتف: ${phone}
-المدينة: ${selectedCity}
-سعر التوصيل: ${selectedDelivery} د.ل
-
-المنتج: ${selectedProduct}
-الكمية: 1
-سعر المنتج: ${selectedPrice} د.ل
-
-الإجمالي شامل التوصيل: ${total} د.ل
-
-طريقة الدفع: ${payment}`;
+`طلبية جديدة من الموقع💜.
+📦 المنتج: ${selectedProduct}
+👤 الاسم: ${name}
+📞 رقم الهاتف: ${phone}
+📍 المدينة: ${selectedCity}
+💰 السعر النهائي (شامل التوصيل): ${total} د.ل
+💳 طريقة الدفع: ${payment}`;
 
     let whatsappLink = 
     "https://wa.me/" + whatsappNumber + 
@@ -180,7 +173,6 @@ function sendWhatsApp() {
     window.open(whatsappLink, "_blank");
 
 }
-
 // القائمة في الهاتف
 
 function openMenu(){
@@ -406,9 +398,6 @@ window.addEventListener("load", function () {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     let w = 0, h = 0, stars = [], last = 0, raf = 0;
 
     function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -417,9 +406,9 @@ window.addEventListener("load", function () {
         return {
             x: rnd(0, w),
             y: initial ? rnd(0, h) : h + rnd(2, 20),
-            r: rnd(0.6, 1.9),
-            v: rnd(8, 22),                  // السرعة (بكسل/ثانية) - بطيئة
-            a: rnd(0.3, 0.85),              // الشفافية
+            r: rnd(0.8, 2.3),
+            v: rnd(14, 38),                 // السرعة (بكسل/ثانية) - بطيئة وواضحة
+            a: rnd(0.45, 0.95),              // الشفافية
             t: rnd(0, 6.28),                // طور التلألؤ
             ts: rnd(0.5, 1.6),              // سرعة التلألؤ
             c: Math.random() < 0.3 ? "233,216,255" : "255,255,255"
@@ -448,7 +437,7 @@ window.addEventListener("load", function () {
             ctx.fill();
 
             // هالة خفيفة للنجوم الأكبر
-            if (s.r > 1.5) {
+            if (s.r > 1.6) {
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.r * 2.6, 0, 6.2832);
                 ctx.fillStyle = "rgba(" + s.c + "," + (alpha * 0.14).toFixed(3) + ")";
@@ -473,12 +462,12 @@ window.addEventListener("load", function () {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         if (widthChanged || !stars.length) {
-            const count = Math.min(90, Math.round((w * h) / 9000));
+            const count = Math.min(160, Math.round((w * h) / 4000));
             stars = [];
             for (let i = 0; i < count; i++) stars.push(makeStar(true));
         }
 
-        if (reduceMotion) draw(0);
+        draw(0);
     }
 
     function loop(now) {
@@ -489,7 +478,7 @@ window.addEventListener("load", function () {
     }
 
     function start() {
-        if (reduceMotion || raf) return;
+        if (raf) return;
         last = performance.now();
         raf = requestAnimationFrame(loop);
     }
