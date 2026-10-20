@@ -1,24 +1,46 @@
 
 
+const whatsappNumber = "218944969802";
+
 // المنتج المختار
 let selectedProduct = "";
+
+// إظهار نموذج الطلب
 function showOrder(productName) {
 
     selectedProduct = productName;
 
     document.getElementById("selectedProduct").innerText = productName;
 
-    const box = document.getElementById('orderBox');
+    const orderBox = document.getElementById("orderBox");
 
-    if (box) {
-        box.style.display = 'block';
-        box.scrollIntoView({ behavior: 'smooth' });
-    }
+    orderBox.style.display = "block";
 
+    // ينزل المستخدم للنموذج
+    orderBox.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+function searchProducts() {
+    let input = document.getElementById('searchInput').value.trim().toLowerCase();
+    let cards = document.querySelectorAll('.product-card');
+
+    cards.forEach(card => {
+        let title = card.querySelector('h3') ? card.querySelector('h3').innerText.toLowerCase() : '';
+        let content = card.innerText.toLowerCase();
+
+        if (title.includes(input) || content.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
 }
 
 const products = document.querySelectorAll(".product-card");
 
+window.addEventListener("scroll",()=>{
 
 products.forEach(product=>{
 
@@ -44,24 +66,15 @@ product.classList.remove("show");
 // إرسال الطلب للواتساب
 function sendWhatsApp() {
 
-    let whatsappNumber = "218944969802";
+    let name = document.getElementById("name").value;
 
-    let message = "السلام عليكم، أريد إتمام طلب من متجر PIXEL 💜";
+    let phone = document.getElementById("phone").value;
 
-    let whatsappLink =
-    "https://wa.me/" + whatsappNumber +
-    "?text=" + encodeURIComponent(message);
+    let location = document.getElementById("location").value;
 
-    window.open(whatsappLink, "_blank");
+    let payment = document.getElementById("payment").value;
 
-
-
-    let name = nameElement.value;
-    let phone = phoneElement.value;
-    let location = locationElement.value;
-    let payment = paymentElement ? paymentElement.value : "";
-
-    if(name.trim() === "" || phone.trim() === "" || location.trim() === ""){
+    if(name === "" || phone === "" || location === ""){
 
         alert("يرجى تعبئة جميع البيانات");
 
@@ -70,7 +83,7 @@ function sendWhatsApp() {
     }
 
     let message = 
-`السلام عليكم ورحمة الله وبركاته 
+`طلب جديد من متجر PIXEL 💜
 
 المنتج: ${selectedProduct}
 
@@ -86,8 +99,7 @@ function sendWhatsApp() {
     "https://wa.me/" + whatsappNumber + 
     "?text=" + encodeURIComponent(message);
 
-    // تم تعديل هذه الخطوة لضمان فتح الواتساب فوراً وعدم حظرها من المتصفح
-    window.location.href = whatsappLink;
+    window.open(whatsappLink, "_blank");
 
 }
 
@@ -106,8 +118,6 @@ function openMenu(){
         menu.style.display = "flex";
 
     }
-
-}
 // مراقب التمرير لإظهار وإخفاء البطاقات
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -126,4 +136,17 @@ const observer = new IntersectionObserver((entries) => {
 // تطبيق المراقبة على جميع بطاقات المنتجات
 document.querySelectorAll('.product-card').forEach(card => {
     observer.observe(card);
+});
+
+}
+window.addEventListener("load", function () {
+
+    const title = document.querySelector(".products h2");
+
+    if (title) {
+        setTimeout(function () {
+            title.classList.add("title-intro");
+        }, 2800);
+    }
+
 });
