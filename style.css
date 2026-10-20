@@ -92,7 +92,7 @@ header p {
     font-weight: 800;
     margin-bottom: 10px;
     opacity: 0;
-    animation: smoothFadeUp 0.7s ease-out 0.7s forwards; /* يظهر مباشرة بعد الهيدر */
+    animation: smoothFadeUp 0.7s ease-out 0.7s forwards;
 }
 
 .product-card {
@@ -164,35 +164,79 @@ header p {
     cursor: pointer;
 }
 
+/* صندوق الطلب المطور مع القائمة والبحث عن المدن */
 .order-box {
     background: #ffffff;
     color: #333;
     width: 90%;
-    max-width: 350px;
-    margin: 20px auto;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    max-width: 360px;
+    margin: 25px auto;
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     text-align: right;
 }
 
 .order-box h2 {
     color: #7b2cff;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 800;
     margin-bottom: 10px;
     text-align: center;
 }
 
+.city-selection-box {
+    margin-bottom: 8px;
+    background: #f9f9f9;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+#citySearchInput {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
 .order-box input, 
 .order-box select {
     width: 100%;
-    padding: 9px;
+    padding: 10px;
     margin-bottom: 8px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 13px;
     outline: none;
+    background: #fff;
+    color: #333;
+}
+
+.order-box input:focus, 
+.order-box select:focus {
+    border-color: #7b2cff;
+}
+
+/* ملخص السعر النهائي شامل التوصيل */
+.price-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f3ebff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.price-summary strong {
+    color: #7b2cff;
+    font-size: 17px;
 }
 
 .order-box button {
@@ -220,9 +264,11 @@ header p {
     .hamburger { display: block; font-size: 22px; color: #7b2cff; }
     .product-card { width: 92%; }
 }
+
 .delay-first {
     transition-delay: 1.5s !important;
 }
+
 /* شريط التنبيهات العلوي */
 .announcement-bar {
     background: #5c19d6;
@@ -233,14 +279,14 @@ header p {
     font-weight: 700;
 }
 
-/* شريط البحث - إضافة أنيميشن الظهور Fade Up */
+/* شريط البحث */
 .search-box {
     position: relative;
     max-width: 380px;
     margin: 20px auto 15px auto;
     width: 90%;
     opacity: 0;
-    animation: smoothFadeUp 0.8s ease-out 0.5s forwards; /* يظهر بأنيميشن */
+    animation: smoothFadeUp 0.8s ease-out 0.5s forwards;
 }
 
 .search-box input {
@@ -262,7 +308,7 @@ header p {
     color: #7b2cff;
 }
 
-/* شارات الثقة - إضافة أنيميشن الظهور Fade Up */
+/* شارات الثقة */
 .features-badges {
     display: flex;
     justify-content: center;
@@ -270,7 +316,7 @@ header p {
     margin-top: 15px;
     flex-wrap: wrap;
     opacity: 0;
-    animation: smoothFadeUp 0.8s ease-out 0.7s forwards; /* تظهر بأنيميشن بعد البحث */
+    animation: smoothFadeUp 0.8s ease-out 0.7s forwards;
 }
 
 .badge {
@@ -283,13 +329,13 @@ header p {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* الخط الفاصل الأبيض البارز (Bold) */
+/* الخط الفاصل الأبيض البارز */
 .full-divider {
     width: 100%;
-    height: 3px; /* زيادة السمك */
-    background: #ffffff; /* لون أبيض صريح */
+    height: 3px;
+    background: #ffffff;
     margin: 30px 0 20px 0;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* إضاءة ناعمة لإبرازه */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     opacity: 0;
     animation: smoothFadeUp 0.8s ease-out 0.9s forwards;
 }
