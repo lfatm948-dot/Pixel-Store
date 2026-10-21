@@ -56,6 +56,58 @@ function getProductPrice(productName) {
 }
 
 // تحديث ملخص السعر داخل بوكس الطلب
+// ===== عناصر الطلب + السلة =====
+let orderItems = [];
+let orderMode = "direct";   // direct = منتج واحد | cart = من السلة
+let cart = [];
+const CART_KEY = "pixel_cart";
+
+function saveCart() {
+    try {
+        localStorage.setItem(CART_KEY, JSON.stringify(cart.map(function (i) {
+            return { name: i.name, qty: i.qty };
+        })));
+    } catch (e) {}
+    updateCartBadge();
+}
+
+function loadCart() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        cart = saved.map(function (i) {
+            return {
+                name: i.name,
+                price: getProductPrice(i.name),
+                qty: Math.min(Math.max(parseInt(i.qty) || 1, 1), 20)
+            };
+        }).filter(function (i) { return i.price > 0; });
+    } catch (e) { cart = []; }
+}
+
+function updateCartBadge() {
+    const fab = document.getElementById("cartFab");
+    const num = document.getElementById("cartCount");
+    if (!fab || !num) return;
+    const n = cart.reduce(function (s, i) { return s + i.qty; }, 0);
+    num.textContent = n;
+    fab.classList.toggle("empty", n === 0);
+}
+
+let toastTimer;
+function toast(msg) {
+    let t = document.getElementById("toast");
+    if (!t) {
+        t = document.createElement("div");
+        t.id = "toast";
+        document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 1800);
+}
+
+// تحديث ملخص السعر داخل بوكس الطلب
 function updateOrderSummary() {
     const sp = document.getElementById("sumProduct");
     const sd = document.getElementById("sumDelivery");
@@ -63,12 +115,14 @@ function updateOrderSummary() {
 
     if (!sp || !sd || !st) return;
 
-    sp.innerText = selectedPrice + " د.ل";
+    const subtotal = orderItems.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
+
+    sp.innerText = subtotal + " د.ل";
 
     if (selectedCity) {
         sd.innerText = selectedDelivery + " د.ل";
         sd.classList.remove("muted");
-        st.innerText = (selectedPrice + selectedDelivery) + " د.ل";
+        st.innerText = (subtotal + selectedDelivery) + " د.ل";
     } else {
         sd.innerText = "اختر المدينة";
         sd.classList.add("muted");
@@ -76,25 +130,86 @@ function updateOrderSummary() {
     }
 }
 
-// إظهار نموذج الطلب
-function showOrder(productName) {
+// رسم المنتجات داخل بوكس الطلب (مع الكمية)
+function renderOrderItems() {
+    const box = document.getElementById("obItems");
+    if (!box) return;
+    box.innerHTML = "";
 
-    selectedProduct = productName;
-    selectedPrice = getProductPrice(productName);
+    function mk(tag, cls, txt, fn) {
+        const el = document.createElement(tag);
+        if (cls) el.className = cls;
+        if (txt !== undefined) el.textContent = txt;
+        if (fn) { el.type = "button"; el.addEventListener("click", fn); }
+        return el;
+    }
 
-    document.getElementById("selectedProduct").innerText = productName;
+    orderItems.forEach(function (it, idx) {
+        const row = mk("div", "ob-item");
+        const qty = mk("div", "ob-qty");
+        qty.appendChild(mk("button", "", "−", function () { changeQty(idx, -1); }));
+        qty.appendChild(mk("span", "", String(it.qty)));
+        qty.appendChild(mk("button", "", "+", function () { changeQty(idx, 1); }));
 
-    updateOrderSummary();
-
-    const orderBox = document.getElementById("orderBox");
-
-    orderBox.style.display = "block";
-
-    // ينزل المستخدم للنموذج
-    orderBox.scrollIntoView({
-        behavior: "smooth"
+        row.appendChild(mk("span", "ob-name", it.name));
+        row.appendChild(qty);
+        row.appendChild(mk("span", "ob-price", (it.price * it.qty) + " د.ل"));
+        row.appendChild(mk("button", "ob-rm", "✕", function () { removeItem(idx); }));
+        box.appendChild(row);
     });
 
+    updateOrderSummary();
+}
+
+function changeQty(idx, d) {
+    const it = orderItems[idx];
+    if (!it) return;
+    it.qty = Math.min(Math.max(it.qty + d, 1), 20);
+    if (orderMode === "cart") saveCart();
+    renderOrderItems();
+}
+
+function removeItem(idx) {
+    orderItems.splice(idx, 1);
+    if (orderMode === "cart") saveCart();
+
+    if (!orderItems.length) {
+        document.getElementById("orderBox").style.display = "none";
+        toast("تم إفراغ الطلب");
+        return;
+    }
+    renderOrderItems();
+}
+
+function openOrderBox() {
+    const orderBox = document.getElementById("orderBox");
+    orderBox.style.display = "block";
+    renderOrderItems();
+    orderBox.scrollIntoView({ behavior: "smooth" });
+}
+
+// اطلب الآن: منتج واحد مباشرة
+function showOrder(productName) {
+    orderMode = "direct";
+    orderItems = [{ name: productName, price: getProductPrice(productName), qty: 1 }];
+    openOrderBox();
+}
+
+// أضف للسلة
+function addToCart(productName) {
+    const found = cart.find(function (i) { return i.name === productName; });
+    if (found) found.qty = Math.min(found.qty + 1, 20);
+    else cart.push({ name: productName, price: getProductPrice(productName), qty: 1 });
+    saveCart();
+    toast("تمت الإضافة للسلة 🛒");
+}
+
+// فتح السلة وإتمام الطلب
+function openCart() {
+    if (!cart.length) { toast("السلة فارغة"); return; }
+    orderMode = "cart";
+    orderItems = cart;
+    openOrderBox();
 }
 function searchProducts() {
     let input = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -138,41 +253,7 @@ product.classList.remove("show");
 
 });
 
-function sendWhatsApp() {
 
-    let name = document.getElementById("name").value.trim();
-
-    let phone = document.getElementById("phone").value.trim();
-
-    let payment = document.getElementById("payment").value;
-
-    if(name === "" || phone === "" || selectedCity === ""){
-
-        alert("يرجى تعبئة جميع البيانات");
-
-        return;
-
-    }
-
-    // السعر النهائي = سعر المنتج + سعر التوصيل
-    let total = selectedPrice + selectedDelivery;
-
-    let message = 
-`طلبية جديدة من الموقع💜.
-📦 المنتج: ${selectedProduct}
-👤 الاسم: ${name}
-📞 رقم الهاتف: ${phone}
-📍 المدينة: ${selectedCity}
-💰 السعر النهائي (شامل التوصيل): ${total} د.ل
-💳 طريقة الدفع: ${payment}`;
-
-    let whatsappLink = 
-    "https://wa.me/" + whatsappNumber + 
-    "?text=" + encodeURIComponent(message);
-
-    window.open(whatsappLink, "_blank");
-
-}
 // القائمة في الهاتف
 
 function openMenu(){
@@ -188,6 +269,48 @@ function openMenu(){
         menu.style.display = "flex";
 
     }
+    function sendWhatsApp() {
+
+    let name = document.getElementById("name").value.trim();
+
+    let phone = document.getElementById("phone").value.trim();
+
+    let payment = document.getElementById("payment").value;
+
+    if(name === "" || phone === "" || selectedCity === "" || !orderItems.length){
+
+        alert("يرجى تعبئة جميع البيانات");
+
+        return;
+
+    }
+
+    // السعر النهائي = مجموع المنتجات + سعر التوصيل
+    let subtotal = orderItems.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
+    let total = subtotal + selectedDelivery;
+
+    function line(i) { return i.name + (i.qty > 1 ? " × " + i.qty : ""); }
+
+    let productsText = orderItems.length === 1
+        ? "📦 المنتج: " + line(orderItems[0])
+        : "📦 المنتجات:\n" + orderItems.map(function (i) { return "• " + line(i); }).join("\n");
+
+    let message = 
+`طلبية جديدة من الموقع💜.
+${productsText}
+👤 الاسم: ${name}
+📞 رقم الهاتف: ${phone}
+📍 المدينة: ${selectedCity}
+💰 السعر النهائي (شامل التوصيل): ${total} د.ل
+💳 طريقة الدفع: ${payment}`;
+
+    let whatsappLink = 
+    "https://wa.me/" + whatsappNumber + 
+    "?text=" + encodeURIComponent(message);
+
+    window.open(whatsappLink, "_blank");
+
+}
 // مراقب التمرير لإظهار وإخفاء البطاقات
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -501,5 +624,95 @@ window.addEventListener("load", function () {
 
     resize();
     start();
+
+})();
+// ==========================================================
+// المتجر: تصنيفات + زر أضف للسلة + أزرار عائمة
+// ==========================================================
+(function initStore() {
+
+    document.querySelectorAll(".product-card").forEach(function (card) {
+        const orderBtn = card.querySelector("button");
+        const h3 = card.querySelector("h3");
+        const m = orderBtn && (orderBtn.getAttribute("onclick") || "").match(/showOrder\('(.*)'\)/);
+        const name = m ? m[1] : "";
+
+        // التصنيف تلقائيًا من اسم المنتج (أو أضف data-cat="light|tripod|audio|acc" على البطاقة)
+        if (!card.dataset.cat) {
+            const t = (h3 ? h3.textContent : "").toLowerCase();
+            let cat = "light";
+            if (/mic|earbuds|مايك|سماع/.test(t)) cat = "audio";
+            else if (/power bank|حاملة|ستاند رقبة/.test(t)) cat = "acc";
+            else if (/tripod|ترايبود|live-k7|pk-?99|pk10/.test(t)) cat = "tripod";
+            card.dataset.cat = cat;
+        }
+
+        if (orderBtn && name) {
+            const add = document.createElement("button");
+            add.type = "button";
+            add.className = "add-cart";
+            add.textContent = "🛒 أضف للسلة";
+            add.addEventListener("click", function () { addToCart(name); });
+            orderBtn.insertAdjacentElement("afterend", add);
+        }
+    });
+
+    // شريط التصنيفات
+    const cats = [["all", "الكل"], ["light", "💡 إضاءة"], ["tripod", "📸 ترايبود"], ["audio", "🎤 صوتيات"], ["acc", "🔌 ملحقات"]];
+    const bar = document.createElement("div");
+    bar.className = "cat-bar";
+
+    cats.forEach(function (c) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "cat" + (c[0] === "all" ? " active" : "");
+        b.textContent = c[1];
+        b.dataset.cat = c[0];
+        bar.appendChild(b);
+    });
+
+    bar.addEventListener("click", function (e) {
+        const b = e.target.closest(".cat");
+        if (!b) return;
+        activeCat = b.dataset.cat;
+        bar.querySelectorAll(".cat").forEach(function (x) { x.classList.toggle("active", x === b); });
+        searchProducts();
+    });
+
+    const h2 = document.querySelector(".products h2");
+    if (h2) h2.insertAdjacentElement("afterend", bar);
+
+    // زر واتساب عائم + زر السلة
+    const wa = document.createElement("a");
+    wa.id = "waFab";
+    wa.className = "fab";
+    wa.target = "_blank";
+    wa.rel = "noopener";
+    wa.setAttribute("aria-label", "واتساب");
+    wa.href = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent("مرحبًا، عندي استفسار عن منتج من الموقع 💜");
+    wa.textContent = "💬";
+
+    const cf = document.createElement("button");
+    cf.id = "cartFab";
+    cf.type = "button";
+    cf.className = "fab empty";
+    cf.innerHTML = '🛒 السلة (<span id="cartCount">0</span>)';
+    cf.addEventListener("click", openCart);
+
+    document.body.appendChild(wa);
+    document.body.appendChild(cf);
+
+    // إخفاء الأزرار العائمة عندما يظهر بوكس الطلب
+    const ob = document.getElementById("orderBox");
+    if (ob && "IntersectionObserver" in window) {
+        new IntersectionObserver(function (es) {
+            const v = es[0].isIntersecting;
+            wa.classList.toggle("hide", v);
+            cf.classList.toggle("hide", v);
+        }).observe(ob);
+    }
+
+    loadCart();
+    updateCartBadge();
 
 })();
